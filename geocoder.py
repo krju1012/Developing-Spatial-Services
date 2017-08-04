@@ -1,16 +1,34 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask import request
 import sqlite3
 from flask import g
 
 app = Flask(__name__)
-DATABASE= '/media/sf_shared_folder/saarland.sqlite'
+DATABASE= '/media/sf_shared_folder/my_bremen_osm_1.sqlite'
+
+
+def generate_sql(arg1, arg2):
+  
+    sql_command='''SELECT node_id, adress,(ST_Distance(MakePoint({0}, {1}), geom)) /   1000 AS dist_km
+    FROM my_osm_new_adresses as a
+    where ST_Contains(ST_Buffer(MakePoint({0}, {1}),10000),geom)
+     AND  a.ROWID IN (
+     SELECT ROWID
+     FROM SpatialIndex
+     WHERE f_table_name = 'my_osm_new_adresses'
+     AND search_frame = ST_Buffer(MakePoint({0}, {1}),10000))
+     order by (ST_Distance(MakePoint({0}, {1}), geom))  limit 1
+    ;'''.format(arg1, arg2) 
+    print sql_command
+    return sql_command
 
 @app.before_request
 def dataconnect():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
+    g._database.enable_load_extension(True)
+    g._database.load_extension('/usr/local/lib/mod_spatialite')
     print "Database succesfully connected"
 
 
@@ -24,18 +42,30 @@ def dataconnect_close(exception):
 @app.route('/db')
 def query():
     cur = g._database.cursor()
-    cur.execute('''SELECT * from geom_address_3857 limit 10''')
+    cur.execute('''select * from osm_nodes limit 10''')
     print cur.fetchall()
     return 'connected'
-   # cur = g._database.execute(.tables, args)
-   # rv = cur.fetchall()
-   # cur.close()    
-   # return (rv[0] if rv else None) if one else rv
+   
+@app.route('/geocode')
+def calc_distance():
+  frompt = request.args.get('from')
+  #topt = request.args.get('to')
+  lat1,lon1 = frompt.split(",")
+  print lat1, lon1
+  #lat2,lon2 = topt.split(",")
+  cur2 = g._database.cursor()
+  cur2.execute(generate_sql(lat1,lon1))
+  
+  results= cur2.fetchall()
+  print results
+  return str(results)
 
-#@app.route('/geocode/lat=<int:lat>')
-#def location(lat):
-#	return 'Latitude: %d' % lat
+
+@app.route("/")
+@app.route("/<user>")
+def template_test(user=None):
+    return render_template('index.html', user=user)
 
 
-#db.execute('select node_id, address, st_astext(geom) from geom_address_3857 limit 10')
-#print ();
+if __name__ == '__main__':
+    app.run(debug=True)
