@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>LatLon Quiz</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
+	<script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>   
+	<script src='https://unpkg.com/jquery@3.2.1'></script>
+	
+	
+</head>
+<body>
+
+	 
+
+<div id='mapid'>
+  <div class="quiz-container">
+    <div id="quiz">
+      <div id="highscore-table">
+		<font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> 
+	
+		<!-- Highscore Table -->
+		<table width=40% border=1 bgcolor="#FFFFFF">
+		<tr><td>Name</td><td>Gesamtdistanz in km</td>
+		<loop sort=- range=0,10>
+		<tr>
+		<td><b>{{ user }}</b></td>
+		<td id="counter">0</td>
+		</tr>
+		</loop>
+
+		</table>
+		</div>
+	  </div>
+	</div>
+</div>
+<style>
+#body { margin:0; padding:0; }
+  #mapid { position:absolute; top:0; bottom:0; width:100%;}
+  #highscore-table {position: absolute; z-index: 9999;}
+  
+</style>
+
+</body>
+<script type="text/javascript" src="static/js/scripts.js"></script> 
+</html>
