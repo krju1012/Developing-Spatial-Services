@@ -13,6 +13,7 @@
     <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>   
  <script src='https://unpkg.com/jquery@3.2.1'></script>
+ <script src="https://d3js.org/d3.v4.min.js"></script>
  
  
 </head>
@@ -22,22 +23,27 @@
 
 <div id='mapid'>
   <div id="highscore-table">  
-    <span id="question"></span>
-        <!-- Headertext -->
-        <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> 
-      
-        <!-- Highscore Table -->
-        <table width=40% border=1 bgcolor="#FFFFFF">
-        <tr><td>Name</td><td>Gesamtdistanz in km</td>
-        <loop sort=- range=0,10>
-        <tr>
-        <td><b>{{ user }}</b></td>
-        <td id="counter">0</td>
-        </tr>
-        </loop>
-        </table>
-      
-      
+   <!-- Headertext -->
+    <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> 
+  
+    <!-- Highscore Table -->
+    <table width=40% border=1 bgcolor="#FFFFFF">
+    <tr><td>Name</td><td>Gesamtdistanz in km</td>
+    <loop sort=- range=0,10>
+    <tr>
+    <td><b>{{ user }}</b></td>
+    <td id="counter">0</td>
+    </tr>
+    </loop>
+    </table>
+    <div id="question"> 
+      <span id="content">
+        <p>Wo befindet sich das Heidelberger <span class="before">Schloss</span> ?</p>
+  <!--       <td>Wo befindet sich das Heidelberger <br />Schloss?</td>
+   -->    </span>
+     
+        
+    </div>     
   </div>     
 </div>
 
@@ -46,14 +52,25 @@
   #mapid { position:absolute; top:0; bottom:0; width:100%;}
   #highscore-table {position: absolute; z-index: 9999;}
   #question{
-  position: absolute;
-  width: 200px;
-  height: 90px;
-  line-height: 90px;
-  text-align: center;
-  border: 2px dashed #f69c55;
-  top:200px;
-  background: white;
+    position: relative;
+    width: 200px;
+    height: 130px;
+    line-height: 1.5;
+    text-align: center;
+    border: 2px dashed #f69c55;
+    top:50px;
+    background: white;
+    font-size: 1vw;
+    display: table-cell;
+    vertical-align: middle; 
+  }
+  #content{
+    position: absolute;              
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    width: 12em;
   }
 </style>
 

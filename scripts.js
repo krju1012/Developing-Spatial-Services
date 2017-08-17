@@ -1,7 +1,7 @@
 
 <!-- Map preferences: -->
  var mymap = L.map('mapid',{
-   center: [48.7, 7],
+   center: [48.7, 14],
    zoom: 5,
    zoomControl:false })
 
@@ -24,22 +24,54 @@
  
 <!-- Quizquestions, erster Eintrag leer da bei 0 clicks noch kein print?!?! -->
 var myquestions = [
+
   "",
-  "Wo steht das Heidelberger Schloss?",
-  "Wo ist die Queen beheimatet?",
+  "An welchem Ort liegt das Domizil der Queen?",
+  "Wo befindet sich die größte Bodenerhöhung Europas?",
+  "Von wo begann Christopher Columbus seine Überfahrt zum amerikanischen Kontinent 1492?",
+  "Wo befindet sich der längste Tunnel der Erde?",
+  "Wo steht ein legendäres neolithisches Bauwerk aus großen Steinen, dessen Verwendungszweck unbekannt ist?",
+  "In welcher Stadt liegt der Geburtsort von Galileo Galilei?"
 ];
+
+var answercoordinates = [
+  [],
+  [49.410502, 8.715364],
+  [51.501317, -0.141557],
+  [43.352253, 42.426246],
+  [37.200312, -6.898533],
+  [46.563048, 8.576577],
+  [51.178808, -1.826236],
+  [43.714182, 10.398632]
+  ]
+
+var answertext = [
+  "",
+  "Das Heidelberger Schloss liegt ",
+  "Der Buckingham Palace liegt ",
+  "Der Mount Elbrus liegt ",
+  "Palos de la Frontera liegt ",
+  "Der Gotthard-Basistunnel befindet sich ",
+  "Das Stonehenge-Denkmal befindet sich ",
+  "Galileis Geburtsort Pisa befindet sich "
+  ]
+
+
+
+
+
 
  function onMapClick(e) {
    questioncounter +=1;
    lat = e.latlng.lat;
    lng = e.latlng.lng;
    var from = turf.point([lat, lng]);
-   var to = turf.point([48, 8]);
+   var to = turf.point(answercoordinates[questioncounter]);
    var distance = turf.distance(from, to);
    var shortdistance = parseInt(distance.toFixed(2));
    popup
      .setLatLng(e.latlng)
-     .setContent(shortdistance + " km entfernt")
+     .setContent(answertext[questioncounter] + shortdistance + " km entfernt")
      .openOn(mymap);
    var add = (function () {
      
@@ -68,7 +100,7 @@ var myquestions = [
  $('#mapid')
   .click(function() {
     document
-        .getElementById('question')
+        .getElementById('content')
         .innerHTML = myquestions[questioncounter];  
     });
  
