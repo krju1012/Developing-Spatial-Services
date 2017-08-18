@@ -1,4 +1,3 @@
-
 <!-- Map preferences: -->
  var mymap = L.map('mapid',{
    center: [48.7, 14],
@@ -59,30 +58,50 @@ var answertext = [
 
 
 
+var firstpolyline = {};
 
 
  function onMapClick(e) {
    questioncounter +=1;
    lat = e.latlng.lat;
    lng = e.latlng.lng;
-   var from = turf.point([lat, lng]);
+   var frompoint = turf.point([lat, lng]);
    var to = turf.point(answercoordinates[questioncounter]);
-   var distance = turf.distance(from, to);
+   var distance = turf.distance(frompoint, to);
    var shortdistance = parseInt(distance.toFixed(2));
    popup
      .setLatLng(e.latlng)
      .setContent(answertext[questioncounter] + shortdistance + " km entfernt")
      .openOn(mymap);
    var add = (function () {
-     
      return function () {
-         console.log(counter)
+       console.log(counter)
        return counter += shortdistance;
-     
      }
-})();
+   })();
    
+	// Temporäre Liste der 2 Koordinaten für Anfangs- und Endpunkt Polylinie
+	var pointList = [];
 
+	pointList.push(([lat, lng]),answercoordinates[questioncounter]);
+	
+	if (firstpolyline != undefined) {
+		mymap.removeLayer(firstpolyline);
+	};
+	
+	firstpolyline = new L.Polyline(pointList, {
+    color: 'red',
+    weight: 3,
+    opacity: 0.5,
+    smoothFactor: 1
+	});
+	
+	
+	
+	// console.log(firstpolyline);
+	
+	firstpolyline.addTo(mymap);
+	
 
 
 
@@ -104,16 +123,4 @@ var answertext = [
         .innerHTML = myquestions[questioncounter];  
     });
  
- // var q1 = "Wo steht der Eiffelturm?";
- // var q2 = "An welchem Ort findet das Oktoberfest statt?";
- // var questioncounter = 0;
-
- // function questionclicks() {
- //    questioncounter +=1;
- //    if questioncounter = 0 
- //      document.getElementById('q1'),
- //    else if questioncounter = 1
- //      document.getElementById('q2');
- // }
-
- // mymap.on('click', questionclicks );
+ 
