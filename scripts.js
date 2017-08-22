@@ -1,27 +1,28 @@
 <!-- Map preferences: -->
- var mymap = L.map('mapid',{
-   center: [48.7, 14],
-   zoom: 5,
-   zoomControl:false })
+var mymap = L.map('mapid', {
+  center: [48.7, 14],
+  zoom: 5,
+  zoomControl: false
+})
 
 
- L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-   maxZoom: 18,
-   id: 'mapbox.satellite'
- }).addTo(mymap);
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+  maxZoom: 18,
+  id: 'mapbox.satellite'
+}).addTo(mymap);
 
- 
+
 <!-- LatLong-Popup -->
- var popup = L.popup();
- var lat, lng;
- 
- <!-- Clickcounter for pointdistance -->
- var counter = 0;
+var popup = L.popup();
+var lat, lng;
 
-  <!-- Clickcounter for questioncount, works in firebug-->
- var questioncounter = 0;
- 
-<!-- Quizquestions, erster Eintrag leer da bei 0 clicks noch kein print?!?! -->
+<!-- Clickcounter for pointdistance -->
+var counter = 0;
+
+<!-- Clickcounter for questioncount-->
+var questioncounter = 0;
+
+<!-- Quizquestions -->
 var myquestions = [
 
   "",
@@ -33,6 +34,8 @@ var myquestions = [
   "In welcher Stadt liegt der Geburtsort von Galileo Galilei?"
 ];
 
+
+// Koordinaten der Quizresultate
 var answercoordinates = [
   [],
   [49.410502, 8.715364],
@@ -42,8 +45,9 @@ var answercoordinates = [
   [46.563048, 8.576577],
   [51.178808, -1.826236],
   [43.714182, 10.398632]
-  ]
+]
 
+// Antworttext für Popup
 var answertext = [
   "",
   "Das Heidelberger Schloss liegt ",
@@ -53,74 +57,100 @@ var answertext = [
   "Der Gotthard-Basistunnel befindet sich ",
   "Das Stonehenge-Denkmal befindet sich ",
   "Galileis Geburtsort Pisa befindet sich "
-  ]
+]
 
 
 
-
+// Definieren einer leeren Polyline außerhalb der Klickfunktion
 var firstpolyline = {};
+var marker = {};
+
+// Klickfunktion
+function onMapClick(e) {
+  questioncounter += 1;
+  lat = e.latlng.lat;
+  lng = e.latlng.lng;
+  var frompoint = turf.point([lat, lng]);
+  var to = turf.point(answercoordinates[questioncounter]);
+  var distance = turf.distance(frompoint, to);
+  var shortdistance = parseInt(distance.toFixed(2));
+  popup
+    .setLatLng(e.latlng)
+    .setContent(answertext[questioncounter] + shortdistance + " km entfernt")
+    .openOn(mymap);
+  var add = (function() {
+    return function() {
+      console.log(counter)
+      return counter += shortdistance;
+    }
+  })();
+
+  // Temporäre Liste der 2 Koordinaten für Anfangs- und Endpunkt Polylinie
+  var pointList = [];
+
+  // Füllen der Liste mit Klickkoordinate + Resultatskoordinate
+  pointList.push(([lat, lng]), answercoordinates[questioncounter]);
+
+  // Falls Polyline schon existiert wird diese bei Klick gelöscht und anschließend neu erstellt
+  if (firstpolyline != undefined) {
+    mymap.removeLayer(firstpolyline);
+  };
+
+  // Definition Polyline
+  firstpolyline = new L.Polyline(pointList, {});
 
 
- function onMapClick(e) {
-   questioncounter +=1;
-   lat = e.latlng.lat;
-   lng = e.latlng.lng;
-   var frompoint = turf.point([lat, lng]);
-   var to = turf.point(answercoordinates[questioncounter]);
-   var distance = turf.distance(frompoint, to);
-   var shortdistance = parseInt(distance.toFixed(2));
-   popup
-     .setLatLng(e.latlng)
-     .setContent(answertext[questioncounter] + shortdistance + " km entfernt")
-     .openOn(mymap);
-   var add = (function () {
-     return function () {
-       console.log(counter)
-       return counter += shortdistance;
-     }
-   })();
-   
-	// Temporäre Liste der 2 Koordinaten für Anfangs- und Endpunkt Polylinie
-	var pointList = [];
+  // Falls Marker schon existiert wird dies bei Klick gelöscht und nur der neueste dargestellt
+  if (marker != undefined) {
+    mymap.removeLayer(marker);
+  };
 
-	pointList.push(([lat, lng]),answercoordinates[questioncounter]);
-	
-	if (firstpolyline != undefined) {
-		mymap.removeLayer(firstpolyline);
-	};
-	
-	firstpolyline = new L.Polyline(pointList, {
-    color: 'red',
-    weight: 3,
-    opacity: 0.5,
-    smoothFactor: 1
-	});
-	
-	
-	
-	// console.log(firstpolyline);
-	
-	firstpolyline.addTo(mymap);
-	
+  marker = new L.marker(answercoordinates[questioncounter]);
+  mymap.addLayer(marker);
 
-
-
-   function myFunction(){
-     document.getElementById("counter").innerHTML = add();
-   }
-   
-   myFunction();
- }
-
- mymap.on('click', onMapClick);
+  // Hinzufügen der Polyline zu Karte
+  firstpolyline.addTo(mymap);
 
 
 
- $('#mapid')
+  function myFunction() {
+    document.getElementById("counter").innerHTML = add();
+  }
+
+  myFunction();
+
+
+  
+
+}
+
+mymap.on('click', onMapClick);
+
+
+// var highscore = localStorage.getItem("highscore");
+
+// if(highscore !== null){
+//     if (counter > highscore) {
+//         localStorage.setItem("highscore", counter);      
+//     }
+// }
+// else{
+//     localStorage.setItem("highscore", counter);
+// }
+
+$('#mapid')
   .click(function() {
+    // Write Gesamtdistanz in Table 
     document
-        .getElementById('content')
-        .innerHTML = myquestions[questioncounter];  
-    });
- 
- 
+      .getElementById('content')
+      .innerHTML = myquestions[questioncounter];
+    // Get Name 
+    document.getElementById("scorename").innerHTML = "GeoHawkins"
+    // Get Questioncount and write counter when end is reached
+    if (questioncounter<myquestions.length) {
+      document.getElementById("highscoreList").innerHTML = "NULL"
+    }
+    else {
+      document.getElementById("highscoreList").innerHTML = counter//highscore 
+    }
+  });
