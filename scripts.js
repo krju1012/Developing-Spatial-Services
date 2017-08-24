@@ -11,6 +11,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
   id: 'mapbox.satellite'
 }).addTo(mymap);
 
+// add prompt to define active username
+function promptbox() {
+    var person = prompt("Please enter your name", "Gerhard Mercator");
+    if (person != null) {
+        alert("Hello " + person + "! It's time to test your Geography skills...");
+        document.getElementById("person").innerHTML = person;
+    }
+}
+promptbox();
 
 <!-- LatLong-Popup -->
 var popup = L.popup();
@@ -59,7 +68,24 @@ var answertext = [
   "Galileis Geburtsort Pisa befindet sich "
 ]
 
-
+// Progressbar
+function move() {
+  var elem = document.getElementById("myBar");   
+  var width = 1;
+  var id = setInterval(frame, 10);
+  function frame() {
+    if (width >= 100) {
+      elem.innerHTML = 'Ende';
+      clearInterval(id);
+    } 
+    else {
+      width = 100*(questioncounter/myquestions.length); 
+      elem.style.width = width + '%'; 
+      elem.innerHTML = questioncounter + "/" + myquestions.length;
+    }
+  }
+}
+mymap.on('click', move);
 
 // Definieren einer leeren Polyline außerhalb der Klickfunktion
 var firstpolyline = {};
@@ -127,16 +153,6 @@ function onMapClick(e) {
 mymap.on('click', onMapClick);
 
 
-// var highscore = localStorage.getItem("highscore");
-
-// if(highscore !== null){
-//     if (counter > highscore) {
-//         localStorage.setItem("highscore", counter);      
-//     }
-// }
-// else{
-//     localStorage.setItem("highscore", counter);
-// }
 
 $('#mapid')
   .click(function() {
