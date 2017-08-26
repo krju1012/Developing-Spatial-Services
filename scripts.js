@@ -12,14 +12,13 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 }).addTo(mymap);
 
 // add prompt to define active username
-function promptbox() {
-    var person = prompt("Please enter your name", "Gerhard Mercator");
-    if (person != null) {
-        alert("Hello " + person + "! It's time to test your Geography skills...");
-        document.getElementById("person").innerHTML = person;
-    }
+
+var person = prompt("Please enter your name", "Gerhard Mercator");
+if (person != null) {
+	alert("Hello " + person + "! It's time to test your Geography skills...");
+	document.getElementById("person").innerHTML = person;
+	var personstring = person;
 }
-promptbox();
 
 <!-- LatLong-Popup -->
 var popup = L.popup();
@@ -152,6 +151,8 @@ function onMapClick(e) {
 
 mymap.on('click', onMapClick);
 
+var highscore = localStorage.getItem('highscore', 99999);
+var highscorename = localStorage.getItem('bestscorer');
 
 
 $('#mapid')
@@ -160,13 +161,22 @@ $('#mapid')
     document
       .getElementById('content')
       .innerHTML = myquestions[questioncounter];
-    // Get Name 
-    document.getElementById("scorename").innerHTML = "GeoHawkins"
-    // Get Questioncount and write counter when end is reached
-    if (questioncounter<myquestions.length) {
-      document.getElementById("highscoreList").innerHTML = "NULL"
-    }
-    else {
-      document.getElementById("highscoreList").innerHTML = counter//highscore 
-    }
+	
+	// Write Highscore to Table
+	document.getElementById("highscoreList").innerHTML = highscore;
+	
+	// Save Highscore and Name in Localstorage if lowest score is achieved
+	if (questioncounter == myquestions.length) {
+		if(counter !== null){
+			if (counter < highscore) {
+				localStorage.setItem("highscore", counter); 
+				localStorage.setItem('bestscorer', person);
+			}
+		}
+		else{
+			localStorage.setItem("highscore", counter);
+		}
+	}
+	
   });
+document.getElementById("scorename").innerHTML = highscorename;
