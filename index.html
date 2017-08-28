@@ -8,14 +8,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw==" crossorigin="" />  
+  <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+  <script src='https://unpkg.com/jquery@3.2.1'></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw==" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
-    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-    <script src='https://unpkg.com/jquery@3.2.1'></script>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <link rel="stylesheet" href="leaflet/leaflet.css" />
 
 
 
@@ -26,58 +24,79 @@
 
 
 
-    <div id='mapid'>
-      <p id="demo"></p>
-      <div id="myProgress">
-        <div id="myBar"></div>
-      </div>
-      <div id="counter-table">
-        <!-- Headertext -->
-        <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font>
+<div id='mapid'>
+	<div id="myProgress">
+		<div id="myBar">
+		</div>
+	</div>
 
-        <!-- Counter Table -->
-        <table width=40% border=1 bgcolor="#FFFFFF">
-          <tr>
-            <td>Name</td>
-            <td>Gesamtdistanz in km</td>
-            <loop sort=- range=0,10>
-              <tr>
-                <td id="person">random</td>
-                <td id="counter">0</td>
-              </tr>
-            </loop>
-        </table>
-        <div id="highscore-table">
-
-          <!-- Highscore Table -->
-          <table width=40% border=1 bgcolor="#FFFFFF">
-            <tr>
-              <td>Name</td>
-              <td>Beste Gesamtdistanz</td>
-              <loop sort=- range=0,10>
-                <tr>
-                  <td id="scorename"><b>playerName</b></td>
-                  <td id="highscoreList">0</td>
-                </tr>
-              </loop>
-          </table>
-          <div id="question">
-            <span id="content">
-        <p>Wo befindet sich das Heidelberger <span class="before">Schloss</span> ?</p>
-            <!--       <td>Wo befindet sich das Heidelberger <br />Schloss?</td>
-   -->
-            </span>
+<!-- Headertext -->
+<!-- <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> -->
+<!-- Counter Table -->
+	<div id="counter-table">
+		<table class="tg">
+			<tr>
+				<th class="tg-yw4l">Name</th>
+				<th class="tg-yw4l">Aktuelle Gesamtdistanz</th>
+			</tr>
+			<tr>
+				<td class="tg-yw4l" id="person"></td>
+				<td class="tg-yw4l" id="counter" >0</td>
+			</tr>
+		</table>
 
 
-          </div>
-        </div>
-      </div>
+<!-- Highscore Table -->
+	<div id="highscore-table">
+		<table class="tg">
+			<tr>
+			<!-- <th class="tg-yw4l"> Rang</th> -->
+				<th class="tg-yw4l"> Name</th>
+				<th class="tg-yw4l"> Beste Gesamtdistanz</th>
+			</tr>
+			<tr>
+			<!-- <td class="tg-yw4l" >1</td> -->
+				<td class="tg-yw4l" id="scorename"></td>
+				<td class="tg-yw4l" id="highscoreList"></td>
+			</tr>
+		<!-- <tr> -->
+		<!-- <td class="tg-yw4l" >2</td> -->
+		<!-- <td class="tg-yw4l" id="scorename2"></td> -->
+		<!-- <td class="tg-yw4l" id="highscoreList2"></td> -->
+		<!-- </tr> -->
+		<!-- <tr> -->
+		<!-- <td class="tg-yw4l" >3</td> -->
+		<!-- <td class="tg-yw4l" id="scorename3"></td> -->
+		<!-- <td class="tg-yw4l" id="highscoreList3"></td> -->
+		<!-- </tr> -->
+		</table>
+		<div id="question">
+			<span id="content">
+				<p>Wo befindet sich das Heidelberger Schloss ?</p>
+			</span>
+		</div>
+		
+			<img id= "image" src ="http://www.8thingstodo.com/wp-content/uploads/2013/03/Schloss-Heidelberg-Famous-Castle-in-Germany.jpg" 
+			height="262" width="350"
+			/>
+		
+	</div>
+	</div>
+	</div>
+
+	
 
       <style>
-        #body {
-          margin: 0;
-          padding: 0;
-        }
+		
+		<!-- css reset -> resolves browser specific default margin problem -->
+		body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { 
+			margin:0;
+			padding:0;
+		}
+		html,body {
+			margin:0;
+			padding:0;
+		}
         
         #mapid {
           position: absolute;
@@ -105,21 +124,24 @@
         #counter-table {
           position: absolute;
           z-index: 9999;
+		  width: 350px;
+
         }
         
         #highscore-table {
           position: absolute;
           z-index: 9999;
+		  width: 350px;
         }
         
         #question {
           position: relative;
-          width: 200px;
+          width: 350px;
           height: 130px;
           line-height: 1.5;
           text-align: center;
-          border: 2px dashed #f69c55;
-          top: 50px;
+          border: 4px dashed #26ADE4;
+          top: 0px;
           background: white;
           font-size: 1vw;
           display: table-cell;
@@ -132,11 +154,56 @@
           left: 50%;
           margin-right: -50%;
           transform: translate(-50%, -50%);
-          width: 12em;
+          width: 18em;
+		  font-family:Arial, sans-serif;
+		  font-size:14px;
+		  padding:10px 5px;
         }
+		
+		#image {
+			position: relative;
+			max-width: 350px;
+			max-height: 262px;
+			top: 0px;
+			z-index:9999999;
+		 }
+		
+		
+		.tg  {
+		border-collapse:collapse;
+		border-spacing:0;
+		border-color:#999;
+		}
+		
+		.tg td{
+		font-family:Arial, sans-serif;
+		font-size:14px;
+		padding:10px 5px;
+		color:#444;
+		background-color:#F7FDFA;
+		border-top-width:1px;
+		border-bottom-width:1px;
+		width: 350px;
+		}
+		
+		.tg th{
+		font-family:Arial, sans-serif;
+		font-size:14px;
+		font-weight:normal;
+		padding:10px 5px;
+		color:#fff;
+		background-color:#26ADE4;
+		border-top-width:1px;
+		border-bottom-width:1px;
+		}
+		
+		.tg .tg-yw4l{
+		text-align:center;
+		vertical-align:top
+		}
       </style>
 
   </body>
   <script type="text/javascript" src="static/js/scripts.js"></script>
-
+ 
 </html>

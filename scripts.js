@@ -1,7 +1,7 @@
 <!-- Map preferences: -->
 var mymap = L.map('mapid', {
-  center: [48.7, 14],
-  zoom: 5,
+  center: [48, 14],
+  zoom: 4,
   zoomControl: false
 })
 
@@ -12,7 +12,6 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 }).addTo(mymap);
 
 // add prompt to define active username
-
 var person = prompt("Please enter your name", "Gerhard Mercator");
 if (person != null) {
 	alert("Hello " + person + "! It's time to test your Geography skills...");
@@ -67,6 +66,19 @@ var answertext = [
   "Galileis Geburtsort Pisa befindet sich "
 ]
 
+var questionimages = [
+	
+	"http://www.8thingstodo.com/wp-content/uploads/2013/03/Schloss-Heidelberg-Famous-Castle-in-Germany.jpg",
+	"https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/6ff0d60c-25d9-3163-9ce0-30914651b751",
+	"http://kavkazskitur.com/image/elbrus-north/new/images/40.jpg",
+	"http://static.panoramio.com/photos/large/16154574.jpg",
+	"http://static.panoramio.com/photos/large/1637193.jpg",
+	"https://www.awesomestories.com/images/user/b1d86393fa.jpg",
+	"https://wallpapercave.com/wp/0znYF3E.jpg"	
+]
+
+
+	
 // Progressbar
 function move() {
   var elem = document.getElementById("myBar");   
@@ -144,26 +156,44 @@ function onMapClick(e) {
 
   myFunction();
 
-
   
+  // question images function
+var image = document.getElementById("image");
+function picturechange (){
+	if (questioncounter < myquestions.length){
+		image.src= questionimages[questioncounter]; 
+	}
+	else {
+		image.src= "https://static4.depositphotos.com/1000992/513/i/950/depositphotos_5130517-stock-photo-compass-rope-glasses-and-old.jpg"; 
+	}
+}
+picturechange();
+
+  console.log(questioncounter);
 
 }
 
 mymap.on('click', onMapClick);
 
-var highscore = localStorage.getItem('highscore', 99999);
+var highscore = localStorage.getItem('highscore');
 var highscorename = localStorage.getItem('bestscorer');
 
 
 $('#mapid')
   .click(function() {
-    // Write Gesamtdistanz in Table 
-    document
-      .getElementById('content')
-      .innerHTML = myquestions[questioncounter];
+	  if (questioncounter < myquestions.length) {
+		// Write Questions in Table 
+		document
+			.getElementById('content')
+			.innerHTML = myquestions[questioncounter];
+	  } 
+	  else {
+		  document
+			.getElementById('content')
+			.innerHTML = "Ende"
+	  }
 	
-	// Write Highscore to Table
-	document.getElementById("highscoreList").innerHTML = highscore;
+	
 	
 	// Save Highscore and Name in Localstorage if lowest score is achieved
 	if (questioncounter == myquestions.length) {
@@ -171,7 +201,7 @@ $('#mapid')
 			if (counter < highscore) {
 				localStorage.setItem("highscore", counter); 
 				localStorage.setItem('bestscorer', person);
-			}
+				}
 		}
 		else{
 			localStorage.setItem("highscore", counter);
@@ -179,4 +209,11 @@ $('#mapid')
 	}
 	
   });
+  
+  // Write Highscore to Table
+document.getElementById("highscoreList").innerHTML = highscore;
 document.getElementById("scorename").innerHTML = highscorename;
+
+
+
+
