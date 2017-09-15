@@ -1,18 +1,19 @@
 # Developing-Spatial-Services
-# Project Title
 
-One Paragraph of project description goes here
+This is the final assignment for the seminar "Developing Spatial Services", which teached about developing IT infrastructures for spatial purposes. As the participants are independent in form of the assignments type of web service, this project faces the creation of a HTML-based spatial quiz, which tests users capability of determining locations on a map to different asked points of interest. 
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+The availability of a modern browser with localStorage support is necessary. 
+Compatible are:
 
 ```
-Give examples
+Google Chrome: 4
+Firefox: 3.5
+Internet Explorer: 8
+Opera: 10.5
+Safari: 4
 ```
 
 ### Installing
