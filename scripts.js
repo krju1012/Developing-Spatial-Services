@@ -177,6 +177,9 @@ mymap.on('click', onMapClick);
 
 var highscore = localStorage.getItem('highscore', 99999);
 
+//console.log("person: " + person)
+//console.log("var highscore: " + highscore)
+//console.log("local storage highscore: " + localStorage.getItem('highscore'))
 
 $('#mapid')
 	.click(function() {
@@ -212,4 +215,4 @@ $('#mapid')
   // Write Highscore to Table
 document.getElementById("highscoreList").innerHTML =localStorage.getItem("highscore");
 document.getElementById("scorename").innerHTML = localStorage.getItem("bestscorer");
-//console.log(localStorage.getItem("bestscorer"));
+//console.log("bestscorer: " + localStorage.getItem("bestscorer"));
