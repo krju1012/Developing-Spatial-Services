@@ -11,16 +11,16 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 	id: 'mapbox.satellite'
 }).addTo(mymap);
 
+var person= {};
 
-//window.onload = function(){	
+window.onload = function(){	
 	// add prompt to define active username after full page load
-	var person = prompt("Please enter your name", "Gerhard Mercator");
+	person = prompt("Please enter your name", "Gerhard Mercator");
 	if (person != null) {
 		alert("Hello " + person + "! It's time to test your Geography skills...");
 		document.getElementById("person").innerHTML = person;
 	}
-//}
-
+}
 
 
 <!-- LatLong-Popup -->
@@ -195,7 +195,7 @@ $('#mapid')
 			.innerHTML = "Ende"
 		}
 	
-	
+		
 	
 	// Save Highscore and Name in Localstorage if lowest score is achieved
 		if (questioncounter == myquestions.length) {
