@@ -41,17 +41,29 @@ Give an example
 
 ### Javascript-Code explanation
 
-Explain what these tests test and why
+Definition of Leaflet map with default coordinates and zoom level. The zoom-control is turned of because of distracting behaviour with the highscore-table. The tilelayer has to be provided with an URL-link and a complementary access_token, which grants access to the Leaflet library. On the other hand, the Leaflet map tile provider Mapbox can inspect the amount of requests. The current (15.09.2017) limitations for free access are: 50,000 map views / mo; 50,000 geocode requests / mo; 50,000 directions requests / mo. If more requests are needed a pricing model is required.
+After defining the tilelayer, the specific maximum zoom-level (max. details) is customized as well as the map style, here satellite images. In the end, everything described above is added to the map with the "addTO"-expression.
 
 ```
-Give an example
+<!-- Map preferences: -->
+var mymap = L.map('mapid', {
+	center: [48, 14],
+	zoom: 4,
+	zoomControl: false
+})
+
+
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+	maxZoom: 18,
+	id: 'mapbox.satellite'
+}).addTo(mymap);
 ```
 
 
 ## Built With
 
-* [Leaflet](http://leafletjs.com/) - The JavaScript library for interactive maps
-* [Turf](http://turfjs.org/) - Advanced geospatial analysis for browsers and node (here: distance query)
+* [Leaflet](http://leafletjs.com/) - JavaScript library for interactive maps
+* [Turf](http://turfjs.org/) - Advanced geospatial analysis for browsers (here: distance query)
 * [JQuery](https://jquery.com/) - Event-handling HTML-Javascript documents
 
 
