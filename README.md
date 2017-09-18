@@ -176,6 +176,97 @@ function onMapClick(e) {
 	})();
 ```
 
+### Map animations
+
+A visual method to create an optical reference for the user to get an overview where the actual asked point of interest is, in comparison to the recent clicked point on the map, is implemented via marker and line. The marker indicates where the asked coordinates are located, whereas the line shows the linear distance between the user-generated point and answer location.
+Therefore, an empty list is initiated, which is first cleared and then filled by every click. This list contains the coordinates of the clicked coordinate as well as the resulting coordinate in order to get the start and endpoints for the Leaflet Polyline. To avoid multiple polylines at the same time from displaying on the map, an if-clause had to be inserted where any existing line is removed before a new one is drawn. The same principle is used for the marker as well, except the Leaflet marker is only described by the given answer coordinates provided inside the script.
+```
+ // Temporäre Liste der 2 Koordinaten für Anfangs- und Endpunkt Polylinie
+	var pointList = [];
+
+  // Füllen der Liste mit Klickkoordinate + Resultatskoordinate
+	pointList.push(([lat, lng]), answercoordinates[questioncounter]);
+
+  // Falls Polyline schon existiert wird diese bei Klick gelöscht und anschließend neu erstellt
+	if (firstpolyline != undefined) {
+		mymap.removeLayer(firstpolyline);
+	};
+
+  // Definition Polyline
+	firstpolyline = new L.Polyline(pointList, {});
+
+
+  // Falls Marker schon existiert wird dies bei Klick gelöscht und nur der neueste dargestellt
+	if (marker != undefined) {
+		mymap.removeLayer(marker);
+	};
+
+	marker = new L.marker(answercoordinates[questioncounter]);
+	mymap.addLayer(marker);
+
+  // Hinzufügen der Polyline zu Karte
+	firstpolyline.addTo(mymap);
+```
+
+### Question images
+
+On the left side, under the asked questions box, another visual aspect to increase user-friendly gui is shown. Hereby, a small image characterizing the answer is displayed. Prerequisity for this photo collection, which URL-links are placed inside the code as explained earlier, are standard aspect ratios. The code uses a function where the URLs are requested from a list based on the amount of clicks.
+```
+// question images function
+	var image = document.getElementById("image");
+	function picturechange (){
+		if (questioncounter < myquestions.length){
+			image.src= questionimages[questioncounter]; 
+		}
+		else {
+			image.src= "https://static4.depositphotos.com/1000992/513/i/950/depositphotos_5130517-stock-photo-compass-rope-glasses-and-old.jpg"; 
+		}
+	}
+	picturechange();
+```
+
+### Questions
+
+Each question is displayed dependant how many clicks have been taken, if the end of the question list is reached (here  myquestions.length) the expression "Ende" is shown to mark the end of the quiz. 
+```
+	.click(function() {
+		if (questioncounter < myquestions.length) {
+		// Write Questions in Table 
+		document
+			.getElementById('content')
+			.innerHTML = myquestions[questioncounter];
+		} 
+		else {
+			document
+			.getElementById('content')
+			.innerHTML = "Ende"
+		}
+```
+
+### Highscore with Localstorage
+
+To create a bit of interaction for the quiz, a highscore-table is set up with the local leader (lowest distance overall). The data, here username and score is stored browserinternal via the localstorage method. This webstorage method has a higher storage memory (ca. 5mb) than cookies and its information is never transferred to the server. At first a highscore has been set to 99999 globally, likely to a key-value pair. After that, if all questions are asked and the current score is lower than the highscore (default 99999), the highscore value is overwritten with the just achieved score. 
+```
+var highscore = localStorage.getItem('highscore', 99999);
+
+// Save Highscore and Name in Localstorage if lowest score is achieved
+		if (questioncounter == myquestions.length) {
+			if(counter !== null){
+				if (counter < highscore) {
+					localStorage.setItem("highscore", counter); 
+					localStorage.setItem('bestscorer', person);
+				}
+			}
+			else{
+				localStorage.setItem("highscore", counter);
+			}
+		}
+		 
+  // Write Highscore to Table
+document.getElementById("highscoreList").innerHTML =localStorage.getItem("highscore");
+document.getElementById("scorename").innerHTML = localStorage.getItem("bestscorer");
+	
+```
 
 ## Built With
 
@@ -187,7 +278,3 @@ function onMapClick(e) {
 ## Authors
 
 * **Julian Krauth** - *Universität Heidelberg, Master Geographie* - 
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
