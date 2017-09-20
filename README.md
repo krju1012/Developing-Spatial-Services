@@ -49,7 +49,7 @@ The HTML code defines the style and the user interface of the webservice. Here, 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css" integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw==" crossorigin="" />  
   <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
   <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
-<!--   <script src="https://d3js.org/d3.v4.min.js"></script>  -->
+  <script src='https://unpkg.com/jquery@3.2.1'></script>
 
   </head>
   ```
@@ -58,14 +58,13 @@ The HTML code defines the style and the user interface of the webservice. Here, 
 The HTML body contains all contents of the page including text, images or containers. For example, in this assignment a table is set with interactive text (highscore-table), therefore an "ID" has to be defined in order to be picked up inside the Javascript code. Other than that, changing image URLs can be declared as well (here with static size).
 ```
 <body>
+
 <div id='mapid'>
 	<div id="myProgress">
 		<div id="myBar">
 		</div>
 	</div>
 
-<!-- Headertext -->
-<!-- <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> -->
 <!-- Counter Table -->
 	<div id="counter-table">
 		<table class="tg">
@@ -78,6 +77,7 @@ The HTML body contains all contents of the page including text, images or contai
 				<td class="tg-yw4l" id="counter" >0</td>
 			</tr>
 		</table>
+
 
 <!-- Highscore Table -->
 	<div id="highscore-table">
@@ -92,16 +92,6 @@ The HTML body contains all contents of the page including text, images or contai
 				<td class="tg-yw4l" id="scorename"></td>
 				<td class="tg-yw4l" id="highscoreList"></td>
 			</tr>
-		<!-- <tr> -->
-		<!-- <td class="tg-yw4l" >2</td> -->
-		<!-- <td class="tg-yw4l" id="scorename2"></td> -->
-		<!-- <td class="tg-yw4l" id="highscoreList2"></td> -->
-		<!-- </tr> -->
-		<!-- <tr> -->
-		<!-- <td class="tg-yw4l" >3</td> -->
-		<!-- <td class="tg-yw4l" id="scorename3"></td> -->
-		<!-- <td class="tg-yw4l" id="highscoreList3"></td> -->
-		<!-- </tr> -->
 		</table>
 		<div id="question">
 			<span id="content">
@@ -111,10 +101,12 @@ The HTML body contains all contents of the page including text, images or contai
 		
 			<img id= "image" src ="http://www.8thingstodo.com/wp-content/uploads/2013/03/Schloss-Heidelberg-Famous-Castle-in-Germany.jpg" 
 			height="262" width="350"
-			/>		
+			/>
+		
 		</div>
 	</div>
 </div>
+
 ```
 ### CSS code
 
@@ -132,6 +124,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			padding:0;
 		}
         
+		/* background map*/
         #mapid {
 			position: absolute;
 			top: 0;
@@ -139,6 +132,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			width: 100%;
         }
         
+		/* progressbar background */
         #myProgress {
 			width: 100%;
 			background-color: #ddd;
@@ -147,6 +141,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			bottom: 0;
         }
 		
+		/* progressbar */
         #myBar {
 			width: 1%;
 			height: 30px;
@@ -157,18 +152,21 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			color: white;
         }
 		
+		/* present score table*/
         #counter-table {
 			position: absolute;
 			z-index: 9999;
 			width: 350px;
         }
         
+		/* highscore table */
         #highscore-table {
 			position: absolute;
 			z-index: 9999;
 			width: 350px;
         }
         
+		/* questionbox */
         #question {
 			position: relative;
 			width: 350px;
@@ -183,6 +181,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			vertical-align: middle;
         }
         
+		/* question-text */
         #content {
 			position: absolute;
 			top: 50%;
@@ -195,6 +194,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			padding:10px 5px;
         }
 		
+		/* question-image */
 		#image {
 			position: relative;
 			max-width: 350px;
@@ -203,6 +203,7 @@ The Cascading Styles Sheet defines how the HTML-elements mentioned above are pla
 			z-index:9999999;
 		 }
 		
+		/* table properties */
 		.tg  {
 			border-collapse:collapse;
 			border-spacing:0;
@@ -249,16 +250,16 @@ After defining the tilelayer, the specific maximum zoom-level (max. details) is 
 
 ```
 <!-- Map preferences: -->
-var mymap = L.map('mapid', {
+var mymap = L.map("mapid", {
 	center: [48, 14],
 	zoom: 4,
 	zoomControl: false
 })
 
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
 	maxZoom: 18,
-	id: 'mapbox.satellite'
+	id: "mapbox.satellite"
 }).addTo(mymap);
 ```
 ### Onload prompt
@@ -340,17 +341,16 @@ function move() {
 	var id = setInterval(frame, 10);
 	function frame() {
 		if (width >= 100) {
-			elem.innerHTML = 'Ende';
+			elem.innerHTML = "Ende";
 			clearInterval(id);
-		} 
-		else {
+		} else {
 			width = 100*(questioncounter/myquestions.length); 
-			elem.style.width = width + '%'; 
+			elem.style.width = width + "%"; 
 			elem.innerHTML = questioncounter + "/" + myquestions.length;
 		}
 	}
 }
-mymap.on('click', move);
+mymap.on("click", move);
 ```
 
 ### Distance calculation
@@ -432,16 +432,16 @@ On the left side, under the asked questions box, another visual aspect to increa
 
 Each question is displayed dependant how many clicks have been taken, if the end of the question list is reached (here  myquestions.length) the expression "Ende" is shown to mark the end of the quiz. 
 ```
+$("#mapid")
 	.click(function() {
 		if (questioncounter < myquestions.length) {
 		// Write Questions in Table 
 		document
-			.getElementById('content')
+			.getElementById("content")
 			.innerHTML = myquestions[questioncounter];
-		} 
-		else {
+		} else {
 			document
-			.getElementById('content')
+			.getElementById("content")
 			.innerHTML = "Ende"
 		}
 ```
@@ -450,25 +450,25 @@ Each question is displayed dependant how many clicks have been taken, if the end
 
 To create a bit of interaction for the quiz, a highscore-table is set up with the local leader (lowest distance overall). The data, here username and score is stored browserinternal via the localstorage method. This webstorage method has a higher storage memory (ca. 5mb) than cookies and its information is never transferred to the server. At first a highscore has been set to 99999 globally, likely to a key-value pair. After that, if all questions are asked and the current score is lower than the highscore (default 99999), the highscore value is overwritten with the just achieved score. 
 ```
-var highscore = localStorage.getItem('highscore', 99999);
+var highscore = localStorage.getItem("highscore", 99999);
 
 // Save Highscore and Name in Localstorage if lowest score is achieved
 		if (questioncounter == myquestions.length) {
 			if(counter !== null){
 				if (counter < highscore) {
 					localStorage.setItem("highscore", counter); 
-					localStorage.setItem('bestscorer', person);
+					localStorage.setItem("bestscorer", person);
 				}
-			}
-			else{
+			} else{
 				localStorage.setItem("highscore", counter);
 			}
 		}
-		 
-  // Write Highscore to Table
-document.getElementById("highscoreList").innerHTML =localStorage.getItem("highscore");
-document.getElementById("scorename").innerHTML = localStorage.getItem("bestscorer");
 	
+	});
+  
+  // Write Highscore to Table
+document.getElementById("highscoreList").innerHTML = localStorage.getItem("highscore");
+document.getElementById("scorename").innerHTML = localStorage.getItem("bestscorer");	
 ```
 
 ## Built With
