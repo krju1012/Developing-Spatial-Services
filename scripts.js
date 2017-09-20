@@ -1,14 +1,14 @@
 <!-- Map preferences: -->
-var mymap = L.map('mapid', {
+var mymap = L.map("mapid", {
 	center: [48, 14],
 	zoom: 4,
 	zoomControl: false
 })
 
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw", {
 	maxZoom: 18,
-	id: 'mapbox.satellite'
+	id: "mapbox.satellite"
 }).addTo(mymap);
 
 var person= {};
@@ -88,17 +88,16 @@ function move() {
 	var id = setInterval(frame, 10);
 	function frame() {
 		if (width >= 100) {
-			elem.innerHTML = 'Ende';
+			elem.innerHTML = "Ende";
 			clearInterval(id);
-		} 
-		else {
+		} else {
 			width = 100*(questioncounter/myquestions.length); 
-			elem.style.width = width + '%'; 
+			elem.style.width = width + "%"; 
 			elem.innerHTML = questioncounter + "/" + myquestions.length;
 		}
 	}
 }
-mymap.on('click', move);
+mymap.on("click", move);
 
 // Definieren einer leeren Polyline außerhalb der Klickfunktion
 var firstpolyline = {};
@@ -164,8 +163,7 @@ function onMapClick(e) {
 	function picturechange (){
 		if (questioncounter < myquestions.length){
 			image.src= questionimages[questioncounter]; 
-		}
-		else {
+		} else {
 			image.src= "https://static4.depositphotos.com/1000992/513/i/950/depositphotos_5130517-stock-photo-compass-rope-glasses-and-old.jpg"; 
 		}
 	}
@@ -173,25 +171,24 @@ function onMapClick(e) {
 
 }
 
-mymap.on('click', onMapClick);
+mymap.on("click", onMapClick);
 
-var highscore = localStorage.getItem('highscore', 99999);
+var highscore = localStorage.getItem("highscore", 99999);
 
 //console.log("person: " + person)
 //console.log("var highscore: " + highscore)
 //console.log("local storage highscore: " + localStorage.getItem('highscore'))
 
-$('#mapid')
+$("#mapid")
 	.click(function() {
 		if (questioncounter < myquestions.length) {
 		// Write Questions in Table 
 		document
-			.getElementById('content')
+			.getElementById("content")
 			.innerHTML = myquestions[questioncounter];
-		} 
-		else {
+		} else {
 			document
-			.getElementById('content')
+			.getElementById("content")
 			.innerHTML = "Ende"
 		}
 	
@@ -202,10 +199,9 @@ $('#mapid')
 			if(counter !== null){
 				if (counter < highscore) {
 					localStorage.setItem("highscore", counter); 
-					localStorage.setItem('bestscorer', person);
+					localStorage.setItem("bestscorer", person);
 				}
-			}
-			else{
+			} else{
 				localStorage.setItem("highscore", counter);
 			}
 		}
@@ -213,6 +209,6 @@ $('#mapid')
 	});
   
   // Write Highscore to Table
-document.getElementById("highscoreList").innerHTML =localStorage.getItem("highscore");
+document.getElementById("highscoreList").innerHTML = localStorage.getItem("highscore");
 document.getElementById("scorename").innerHTML = localStorage.getItem("bestscorer");
 //console.log("bestscorer: " + localStorage.getItem("bestscorer"));

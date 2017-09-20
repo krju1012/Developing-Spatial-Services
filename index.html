@@ -12,16 +12,10 @@
   <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js" integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA==" crossorigin=""></script>
   <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
   <script src='https://unpkg.com/jquery@3.2.1'></script>
-<!--   <script src="https://d3js.org/d3.v4.min.js"></script>  -->
-
-
-
 
   </head>
 
-  <body>
-
-
+<body>
 
 <div id='mapid'>
 	<div id="myProgress">
@@ -29,8 +23,6 @@
 		</div>
 	</div>
 
-<!-- Headertext -->
-<!-- <font color="white"><h1>Welcome to the world of LatLon Quizzing!</h1></font> -->
 <!-- Counter Table -->
 	<div id="counter-table">
 		<table class="tg">
@@ -58,16 +50,6 @@
 				<td class="tg-yw4l" id="scorename"></td>
 				<td class="tg-yw4l" id="highscoreList"></td>
 			</tr>
-		<!-- <tr> -->
-		<!-- <td class="tg-yw4l" >2</td> -->
-		<!-- <td class="tg-yw4l" id="scorename2"></td> -->
-		<!-- <td class="tg-yw4l" id="highscoreList2"></td> -->
-		<!-- </tr> -->
-		<!-- <tr> -->
-		<!-- <td class="tg-yw4l" >3</td> -->
-		<!-- <td class="tg-yw4l" id="scorename3"></td> -->
-		<!-- <td class="tg-yw4l" id="highscoreList3"></td> -->
-		<!-- </tr> -->
 		</table>
 		<div id="question">
 			<span id="content">
@@ -97,6 +79,7 @@
 			padding:0;
 		}
         
+		/* background map*/
         #mapid {
 			position: absolute;
 			top: 0;
@@ -104,6 +87,7 @@
 			width: 100%;
         }
         
+		/* progressbar background */
         #myProgress {
 			width: 100%;
 			background-color: #ddd;
@@ -112,6 +96,7 @@
 			bottom: 0;
         }
 		
+		/* progressbar */
         #myBar {
 			width: 1%;
 			height: 30px;
@@ -122,18 +107,21 @@
 			color: white;
         }
 		
+		/* present score table*/
         #counter-table {
 			position: absolute;
 			z-index: 9999;
 			width: 350px;
         }
         
+		/* highscore table */
         #highscore-table {
 			position: absolute;
 			z-index: 9999;
 			width: 350px;
         }
         
+		/* questionbox */
         #question {
 			position: relative;
 			width: 350px;
@@ -148,6 +136,7 @@
 			vertical-align: middle;
         }
         
+		/* question-text */
         #content {
 			position: absolute;
 			top: 50%;
@@ -160,6 +149,7 @@
 			padding:10px 5px;
         }
 		
+		/* question-image */
 		#image {
 			position: relative;
 			max-width: 350px;
@@ -168,6 +158,7 @@
 			z-index:9999999;
 		 }
 		
+		/* table properties */
 		.tg  {
 			border-collapse:collapse;
 			border-spacing:0;
