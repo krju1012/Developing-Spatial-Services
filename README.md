@@ -476,6 +476,8 @@ document.getElementById("scorename").innerHTML = localStorage.getItem("bestscore
 * [Leaflet](http://leafletjs.com/) - JavaScript library for interactive maps
 * [Turf](http://turfjs.org/) - Advanced geospatial analysis for browsers (here: distance query)
 * [JQuery](https://jquery.com/) - Event-handling HTML-Javascript documents
+* [W3School Javascript Coding Convention](https://www.w3schools.com/js/js_conventions.asp) - Javascript Style Convention
+* [W3School HTML5 Style Guide](https://www.w3schools.com/html/html5_syntax.asp) - HTML Style Guide
 
 
 ## Authors
